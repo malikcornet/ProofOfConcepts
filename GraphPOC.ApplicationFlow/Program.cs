@@ -1,19 +1,26 @@
 ﻿using Azure.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
 using Microsoft.Graph.Models;
 using Microsoft.Graph.Models.Security;
 using System.IO;
+
+var builder = new ConfigurationBuilder();
+builder.SetBasePath(Directory.GetCurrentDirectory())
+       .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+IConfiguration config = builder.Build();
 
 string filePath = @"C:\temp\test.txt";
 var fileName = "test";
 
 var scopes = new[] { "https://graph.microsoft.com/.default" };
 
-var tenantId = "{tenant id}";
+var tenantId = config["tenantId"];
 
 // Values from app registration  
-var clientId = "{client id}";
-var clientSecret = "{client secret}";
+var clientId = config["clientId"];
+var clientSecret = config["clientSecret"];
 
 // using Azure.Identity;  
 var options = new TokenCredentialOptions
